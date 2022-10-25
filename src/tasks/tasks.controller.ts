@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Controller('tasks')
 export class TasksController {
@@ -22,22 +25,31 @@ export class TasksController {
   }
 
   @Get()
-  findAll() {
+  public findAll(): Promise<Task[]> {
     return this.tasksService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Task> {
+    const task = await this.tasksService.findOne(id);
+
+    if (task) {
+      return task;
+    }
+
+    throw new NotFoundException();
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  public update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ): Promise<UpdateResult> {
+    return this.tasksService.update(id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  public remove(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
+    return this.tasksService.remove(id);
   }
 }
