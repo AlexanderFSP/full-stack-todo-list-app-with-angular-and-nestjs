@@ -1,64 +1,71 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
-export interface ITaskView {
-  id: number;
-  content: string;
-  completed: boolean;
-}
+import { ITask } from './services/tasks/models/task.model';
+import { TasksService } from './services/tasks/tasks.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild(MatSelectionList) public selectionList!: MatSelectionList;
 
-  public tasks$: Observable<ITaskView[]>;
+  public tasks$: Observable<ITask[]>;
+  public tasksLoaded$: Observable<boolean>;
 
   public readonly newTask = new FormControl<string>('');
 
-  private readonly _tasks$ = new BehaviorSubject<ITaskView[]>([]);
+  private readonly _tasks$ = new BehaviorSubject<ITask[]>([]);
+  private readonly _tasksLoaded$ = new BehaviorSubject<boolean>(false);
 
-  constructor() {
+  constructor(private readonly tasksService: TasksService) {
     this.tasks$ = this._tasks$.asObservable();
+    this.tasksLoaded$ = this._tasksLoaded$.asObservable();
   }
 
-  public async onAddTask(): Promise<void> {
-    const task = this.newTask.value?.trim();
+  public ngOnInit(): void {
+    this.loadTasks();
+  }
 
-    if (task?.length) {
-      try {
-        // TODO: Integrate with back
+  public onAddTask(): void {
+    const content = this.newTask.value?.trim();
 
+    if (content?.length) {
+      this.tasksService.create({ content }).subscribe(task => {
         this.newTask.reset('');
 
-        // TODO: Update tasks
-        // eslint-disable-next-line no-empty
-      } catch {}
+        this._tasks$.next([...this._tasks$.value, task]);
+      });
     }
   }
 
-  // TODO: option -> options
-  public async onSelectionChange({ options }: MatSelectionListChange): Promise<void> {
+  public onSelectionChange({ options }: MatSelectionListChange): void {
     this.selectionList.setDisabledState(true);
 
-    console.log(options);
+    const option = options[0];
+    const task = option.value as ITask;
 
-    // TODO: Uncomment
-    // const task = option.value as ITaskView;
+    this.tasksService
+      .update(task.id, { completed: !task.completed })
+      .pipe(finalize(() => this.selectionList.setDisabledState(false)))
+      .subscribe({
+        // Revert selection
+        error: () => option.toggle()
+      });
+  }
 
-    try {
-      // TODO: Integrate with back
-      // TODO: Update tasks
-    } catch {
-      // TODO: Revert selection
-      // option.toggle();
-    } finally {
-      this.selectionList.setDisabledState(false);
-    }
+  private loadTasks(): void {
+    this.tasksService
+      .findAll()
+      .pipe(catchError(() => of([])))
+      .subscribe(tasks => {
+        this._tasks$.next(tasks);
+        this._tasksLoaded$.next(true);
+      });
   }
 }

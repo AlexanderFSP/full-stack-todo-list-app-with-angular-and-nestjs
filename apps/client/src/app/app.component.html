@@ -4,7 +4,7 @@
   </div>
 </mat-toolbar>
 
-<mat-card class="tasks-container">
+<mat-card *ngIf="tasksLoaded$ | async" class="tasks-container">
   <mat-card-content>
     <mat-selection-list role="list" (selectionChange)="onSelectionChange($event)">
       <mat-list-option
