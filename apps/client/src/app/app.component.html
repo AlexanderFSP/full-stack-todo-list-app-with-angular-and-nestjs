@@ -9,11 +9,23 @@
     <mat-selection-list role="list" (selectionChange)="onSelectionChange($event)">
       <mat-list-option
         *ngFor="let task of tasks$ | async; last as last"
+        color="primary"
         [value]="task"
         [selected]="task.completed"
         role="listitem"
       >
-        {{ task.content }}
+        <div class="list-option-content">
+          <span>{{ task.content }}</span>
+
+          <mat-icon
+            class="delete-icon"
+            fontIcon="delete"
+            color="primary"
+            aria-hidden="false"
+            aria-label="Delete task"
+            (click)="onDeleteTask($event, task)"
+          ></mat-icon>
+        </div>
 
         <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
       </mat-list-option>

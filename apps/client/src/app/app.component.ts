@@ -32,6 +32,26 @@ export class AppComponent implements OnInit {
     this.loadTasks();
   }
 
+  public onDeleteTask(event: Event, task: ITask): void {
+    event.stopPropagation();
+
+    this.selectionList.setDisabledState(true);
+
+    this.tasksService
+      .remove(task.id)
+      .pipe(finalize(() => this.selectionList.setDisabledState(false)))
+      .subscribe(() => {
+        const tasks = this._tasks$.value;
+        const taskIdx = tasks.findIndex(({ id }) => task.id === id);
+
+        if (taskIdx !== -1) {
+          tasks.splice(taskIdx, 1);
+        }
+
+        this._tasks$.next(tasks);
+      });
+  }
+
   public onAddTask(): void {
     const content = this.newTask.value?.trim();
 

@@ -48,3 +48,12 @@
 .add-task-button {
   margin-left: rhythm(4);
 }
+
+.list-option-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-icon {
+  margin-right: rhythm(0.5);
+}

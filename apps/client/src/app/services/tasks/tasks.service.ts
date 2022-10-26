@@ -23,4 +23,9 @@ export class TasksService {
   public update(id: number, body: IUpdateTask): Observable<ITask> {
     return this.http.patch<ITask>(`/api/tasks/${id}`, body);
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public remove(id: number): Observable<any> {
+    return this.http.delete(`/api/tasks/${id}`);
+  }
 }
