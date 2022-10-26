@@ -1,9 +1,31 @@
-<div style="text-align: center">
-  <h1>Welcome to client!</h1>
-  <img
-    width="450"
-    src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-    alt="Nx - Smart, Fast and Extensible Build System"
-  />
-</div>
-<div>Message: {{ hello$ | async | json }}</div>
+<mat-toolbar color="primary">
+  <div class="toolbar-container">
+    <span>full-stack-todo-list-app-with-angular-and-nestjs</span>
+  </div>
+</mat-toolbar>
+
+<mat-card class="tasks-container">
+  <mat-card-content>
+    <mat-selection-list role="list" (selectionChange)="onSelectionChange($event)">
+      <mat-list-option
+        *ngFor="let task of tasks$ | async; last as last"
+        [value]="task"
+        [selected]="task.completed"
+        role="listitem"
+      >
+        {{ task.content }}
+
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+      </mat-list-option>
+    </mat-selection-list>
+
+    <div class="new-task-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Input</mat-label>
+        <input [formControl]="newTask" matInput autocomplete="off" />
+      </mat-form-field>
+
+      <button class="add-task-button" mat-raised-button color="primary" (click)="onAddTask()">Add task</button>
+    </div>
+  </mat-card-content>
+</mat-card>

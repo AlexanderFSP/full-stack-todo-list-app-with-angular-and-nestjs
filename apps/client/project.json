@@ -16,8 +16,11 @@
         "tsConfig": "apps/client/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/client/src/favicon.ico", "apps/client/src/assets"],
-        "styles": ["apps/client/src/styles.scss"],
-        "scripts": []
+        "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "apps/client/src/styles.scss"],
+        "scripts": [],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/client/src"]
+        }
       },
       "configurations": {
         "production": {
