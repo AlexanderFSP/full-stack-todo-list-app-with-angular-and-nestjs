@@ -5,9 +5,14 @@
   "scripts": {
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js",
-    "start": "nx serve",
+    "start:client": "nx serve",
+    "start:api": "nx serve api",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "lint": "nx run-many --target=lint",
+    "lint:fix": "nx run-many --target=lint --fix",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
   "private": true,
   "dependencies": {
@@ -16,6 +21,7 @@
     "@angular/compiler": "~14.2.0",
     "@angular/core": "~14.2.0",
     "@angular/forms": "~14.2.0",
+    "@angular/material": "14.2.5",
     "@angular/platform-browser": "~14.2.0",
     "@angular/platform-browser-dynamic": "~14.2.0",
     "@angular/router": "~14.2.0",
@@ -60,6 +66,8 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-simple-import-sort": "8.0.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "jest-preset-angular": "~12.2.2",

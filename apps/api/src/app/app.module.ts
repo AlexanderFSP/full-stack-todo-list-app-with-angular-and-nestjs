@@ -9,9 +9,9 @@ import { TasksModule } from './tasks/tasks.module';
       type: 'sqlite',
       database: ':memory:',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true
     }),
-    TasksModule,
-  ],
+    TasksModule
+  ]
 })
 export class AppModule {}

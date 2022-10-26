@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { Message } from '@full-stack-todo-list-app-with-angular-and-nestjs/api-interfaces';
 
 @Component({
-  selector: 'full-stack-todo-list-app-with-angular-and-nestjs-root',
+  selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   hello$ = this.http.get<Message>('/api/hello');

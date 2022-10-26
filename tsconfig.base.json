@@ -15,9 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@full-stack-todo-list-app-with-angular-and-nestjs/api-interfaces": [
-        "libs/api-interfaces/src/index.ts"
-      ]
+      "@full-stack-todo-list-app-with-angular-and-nestjs/api-interfaces": ["libs/api-interfaces/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
