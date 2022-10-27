@@ -20,10 +20,6 @@ export class TasksService {
     return this.tasksRepository.find();
   }
 
-  public findOne(id: number): Promise<Task | null> {
-    return this.tasksRepository.findOneBy({ id });
-  }
-
   public update(id: number, updateTaskDto: UpdateTaskDto): Promise<UpdateResult> {
     // TODO: save ?
     return this.tasksRepository.update(id, updateTaskDto);

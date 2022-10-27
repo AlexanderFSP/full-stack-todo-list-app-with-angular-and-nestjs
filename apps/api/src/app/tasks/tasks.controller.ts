@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -18,17 +18,6 @@ export class TasksController {
   @Get()
   public findAll(): Promise<Task[]> {
     return this.tasksService.findAll();
-  }
-
-  @Get(':id')
-  public async findOne(@Param('id', ParseIntPipe) id: number): Promise<Task> {
-    const task = await this.tasksService.findOne(id);
-
-    if (task) {
-      return task;
-    }
-
-    throw new NotFoundException();
   }
 
   @Patch(':id')
