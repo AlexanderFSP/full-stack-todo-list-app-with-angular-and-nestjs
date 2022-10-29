@@ -41,22 +41,10 @@ export class AuthService {
 
     user = await this.usersService.create({ username, password: hashedPassword });
 
-    const tokens = this.getTokens(user);
-
-    // TODO: Persist created refresh token
-
-    return tokens;
+    return this.createTokenPair(user);
   }
 
-  public login(user: User): Promise<TokenPairDto> {
-    const tokens = this.getTokens(user);
-
-    // TODO: Persist created refresh token
-
-    return tokens;
-  }
-
-  private async getTokens(user: User): Promise<TokenPairDto> {
+  public async createTokenPair(user: User): Promise<TokenPairDto> {
     const payload: JwtPayloadDto = { sub: user.id, username: user.username };
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.signAsync(payload, {
