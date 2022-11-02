@@ -1,0 +1,35 @@
+<ng-container *ngIf="tasksLoaded$ | async">
+  <mat-selection-list role="list" (selectionChange)="onSelectionChange($event)">
+    <mat-list-option
+      *ngFor="let task of tasks$ | async; last as last"
+      color="primary"
+      [value]="task"
+      [selected]="task.completed"
+      role="listitem"
+    >
+      <div class="tasks__list-option-content">
+        <span>{{ task.content }}</span>
+
+        <mat-icon
+          class="tasks__delete-icon"
+          fontIcon="delete"
+          color="primary"
+          aria-hidden="false"
+          aria-label="Delete task"
+          (click)="onDeleteTask($event, task)"
+        ></mat-icon>
+      </div>
+
+      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    </mat-list-option>
+  </mat-selection-list>
+
+  <div class="tasks__new-task-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Input</mat-label>
+      <input [formControl]="newTask" matInput autocomplete="off" />
+    </mat-form-field>
+
+    <button class="tasks__add-task-button" mat-raised-button color="primary" (click)="onAddTask()">Add task</button>
+  </div>
+</ng-container>

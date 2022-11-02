@@ -1,0 +1,24 @@
+@import 'styles/mixins/rhythm.mixin';
+
+:host {
+  display: block;
+}
+
+.tasks {
+  &__new-task-container {
+    margin: rhythm(4) 0 0 rhythm(3);
+  }
+
+  &__add-task-button {
+    margin-left: rhythm(4);
+  }
+
+  &__list-option-content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__delete-icon {
+    margin-right: rhythm(0.5);
+  }
+}
