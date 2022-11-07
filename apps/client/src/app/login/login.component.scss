@@ -1,3 +1,17 @@
+@import 'styles/mixins/rhythm.mixin';
+
 :host {
   display: block;
+}
+
+.login {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    max-width: rhythm(75);
+  }
+
+  &__submit-button {
+    margin-top: rhythm(2);
+  }
 }

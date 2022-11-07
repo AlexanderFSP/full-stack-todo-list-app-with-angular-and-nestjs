@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
+import { Nullable } from '../models/nullable.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -15,7 +16,7 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  public findOne(where: FindOptionsWhere<User> | FindOptionsWhere<User>[]): Promise<User | null> {
+  public findOne(where: FindOptionsWhere<User> | FindOptionsWhere<User>[]): Promise<Nullable<User>> {
     return this.usersRepository.findOneBy(where);
   }
 }

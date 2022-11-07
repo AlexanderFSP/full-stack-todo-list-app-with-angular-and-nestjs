@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
+import { Nullable } from '../models/nullable.model';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
@@ -17,8 +18,8 @@ export class AuthService {
     private readonly usersService: UsersService
   ) {}
 
-  public async validateUser(username: string, password: string): Promise<User | null> {
-    const user = await this.usersService.findOne({ username });
+  public async validateUser(email: string, password: string): Promise<Nullable<User>> {
+    const user = await this.usersService.findOne({ email });
 
     if (!user) {
       return null;
@@ -29,8 +30,9 @@ export class AuthService {
     return isPasswordValid ? user : null;
   }
 
-  public async signup({ username, password }: CreateUserDto): Promise<TokenPairDto> {
-    let user = await this.usersService.findOne({ username });
+  public async signup(createUserDto: CreateUserDto): Promise<TokenPairDto> {
+    const { email, password } = createUserDto;
+    let user = await this.usersService.findOne({ email });
 
     if (user) {
       throw new BadRequestException('User already exists');
@@ -39,13 +41,13 @@ export class AuthService {
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltOrRounds);
 
-    user = await this.usersService.create({ username, password: hashedPassword });
+    user = await this.usersService.create({ ...createUserDto, password: hashedPassword });
 
     return this.createTokenPair(user);
   }
 
   public async createTokenPair(user: User): Promise<TokenPairDto> {
-    const payload: JwtPayloadDto = { sub: user.id, username: user.username };
+    const payload: JwtPayloadDto = { sub: user.id, email: user.email };
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),

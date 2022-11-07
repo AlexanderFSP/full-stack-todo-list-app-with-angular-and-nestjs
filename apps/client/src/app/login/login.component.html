@@ -1,1 +1,32 @@
-<p>login works!</p>
+<form class="login__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field *ngIf="form.controls.email as control">
+    <mat-label>Enter your email</mat-label>
+    <input matInput [formControl]="control" />
+
+    <mat-error>
+      <ng-container *ngIf="control.hasError('required')"> You must enter a value </ng-container>
+
+      <ng-container *ngIf="control.hasError('email')"> Not a valid email </ng-container>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="form.controls.password as control">
+    <mat-label>Enter your password</mat-label>
+    <input matInput [formControl]="control" [type]="isPasswordHidden ? 'password' : 'text'" />
+    <button
+      matSuffix
+      mat-icon-button
+      [attr.aria-label]="isPasswordHidden ? 'Show password' : 'Hide password'"
+      [attr.aria-pressed]="isPasswordHidden"
+      (click)="isPasswordHidden = !isPasswordHidden"
+    >
+      <mat-icon>{{ isPasswordHidden ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+
+    <mat-error> You must enter a value </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" class="login__submit-button" type="submit" [disabled]="form.invalid">
+    Login
+  </button>
+</form>
