@@ -1,14 +1,18 @@
 @import 'styles/mixins/rhythm.mixin';
 
 :host {
+  max-width: rhythm(75);
   display: block;
 }
 
 .entrance-form {
+  &__links {
+    margin-bottom: rhythm(2);
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
-    max-width: rhythm(75);
   }
 
   &__submit-button {

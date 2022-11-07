@@ -1,3 +1,9 @@
+<div class="entrance-form__links">
+  <a mat-button color="primary" [routerLink]="['/', appRoutePath.LOGIN]" routerLinkActive="mat-accent">Login</a>
+
+  <a mat-button color="primary" [routerLink]="['/', appRoutePath.SIGNUP]" routerLinkActive="mat-accent">Sign Up</a>
+</div>
+
 <form class="entrance-form__form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field *ngIf="form.controls.email as control">
     <mat-label>Enter your email</mat-label>
@@ -6,7 +12,7 @@
     <mat-error>
       <ng-container *ngIf="control.hasError('required')"> You must enter a value </ng-container>
 
-      <ng-container *ngIf="control.hasError('email')"> Not a valid email </ng-container>
+      <ng-container *ngIf="control.hasError('pattern')"> Not a valid email </ng-container>
     </mat-error>
   </mat-form-field>
 

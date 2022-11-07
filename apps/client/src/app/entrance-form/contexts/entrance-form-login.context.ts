@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 import { AuthService } from '../../services/auth/auth.service';
 import { IAuthenticationBody } from '../../services/auth/models/authentication-body.model';
-import { IJwtPayload } from '../../services/auth/models/jwt-payload.model';
+import { ITokenPair } from '../../services/auth/models/token-pair.model';
 import { IEntranceFormContext } from './entrance-form-context.model';
 
 export class EntranceFormLoginContext implements IEntranceFormContext {
@@ -10,7 +10,7 @@ export class EntranceFormLoginContext implements IEntranceFormContext {
 
   constructor(private readonly authService: AuthService) {}
 
-  public submit(body: IAuthenticationBody): Observable<IJwtPayload> {
+  public submit(body: IAuthenticationBody): Observable<ITokenPair> {
     return this.authService.login(body);
   }
 }
