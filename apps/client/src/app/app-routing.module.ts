@@ -2,15 +2,23 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppRoutePath } from './app.route-path';
+import { EntranceFormLoginContextResolver } from './entrance-form/contexts/entrance-form-login-context.resolver';
+import { EntranceFormSignupContextResolver } from './entrance-form/contexts/entrance-form-signup-context.resolver';
 
 const routes: Routes = [
   {
     path: AppRoutePath.LOGIN,
-    loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('./entrance-form/entrance-form.component').then(m => m.EntranceFormComponent),
+    resolve: {
+      context: EntranceFormLoginContextResolver
+    }
   },
   {
     path: AppRoutePath.SIGNUP,
-    loadComponent: () => import('./signup/signup.component').then(m => m.SignupComponent)
+    loadComponent: () => import('./entrance-form/entrance-form.component').then(m => m.EntranceFormComponent),
+    resolve: {
+      context: EntranceFormSignupContextResolver
+    }
   },
   {
     path: AppRoutePath.TASKS,
@@ -24,6 +32,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
+  providers: [EntranceFormLoginContextResolver, EntranceFormSignupContextResolver],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

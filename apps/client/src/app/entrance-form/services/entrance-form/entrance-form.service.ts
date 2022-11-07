@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Nullable } from '../../models/nullable.model';
-import { IAuthenticationBody } from '../auth/models/authentication-body.model';
+import { Nullable } from '../../../models/nullable.model';
+import { IAuthenticationBody } from '../../../services/auth/models/authentication-body.model';
 
 export interface IEntranceForm {
   email: FormControl<Nullable<string>>;

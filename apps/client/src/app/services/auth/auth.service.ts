@@ -18,6 +18,10 @@ export class AuthService {
     this.currentUser$ = this._currentUser$.asObservable();
   }
 
+  public signup(body: IAuthenticationBody): Observable<IJwtPayload> {
+    return this.http.post<IJwtPayload>('/api/auth/login', body);
+  }
+
   public login(body: IAuthenticationBody): Observable<IJwtPayload> {
     return this.http.post<IJwtPayload>('/api/auth/login', body);
   }
