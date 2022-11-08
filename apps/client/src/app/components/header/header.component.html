@@ -1,5 +1,7 @@
 <mat-toolbar color="primary">
   <div class="container header__container">
     <span>full-stack-todo-list-app-with-angular-and-nestjs</span>
+
+    <button *ngIf="isAuthenticated$ | async" mat-raised-button (click)="onSignOut()">Sign Out</button>
   </div>
 </mat-toolbar>

@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 
+import { AppRoutePath } from '../../app.route-path';
 import { globalConfig } from '../../global-config';
 import { Nullable } from '../../models/nullable.model';
 import { IAuthenticationBody } from './models/authentication-body.model';
@@ -18,7 +20,7 @@ export class AuthService {
 
   private readonly _currentUser$ = new BehaviorSubject<Nullable<IJwtPayload>>(null);
 
-  constructor(private readonly http: HttpClient) {
+  constructor(private readonly router: Router, private readonly http: HttpClient) {
     this.currentUser$ = this._currentUser$.asObservable();
   }
 
@@ -57,6 +59,11 @@ export class AuthService {
     this.setCurrentUser(jwt_decode(tokenPair.access_token));
   }
 
+  public signOut(): void {
+    this.logoutCurrentUser();
+    this.router.navigateByUrl(AppRoutePath.LOGIN);
+  }
+
   public resolveJwtPayloadViaAccessToken(): Nullable<IJwtPayload> {
     const accessToken = this.getAccessToken();
 
@@ -80,7 +87,7 @@ export class AuthService {
     return this._currentUser$.value;
   }
 
-  private getAccessToken(): Nullable<string> {
+  public getAccessToken(): Nullable<string> {
     return localStorage.getItem(globalConfig.localStorageKeys.accessToken);
   }
 

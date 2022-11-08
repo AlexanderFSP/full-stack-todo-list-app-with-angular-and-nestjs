@@ -65,7 +65,7 @@ export class EntranceFormComponent implements OnInit {
       .subscribe({
         next: tokenPair => {
           this.authService.proceedAuthentication(tokenPair);
-          this.router.navigate([AppRoutePath.TASKS]);
+          this.router.navigateByUrl(AppRoutePath.TASKS);
         },
         error: (error: HttpErrorResponse) => this.snackbar.open(error.error.message)
       });
